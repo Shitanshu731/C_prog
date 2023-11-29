@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Circular Queue</h1>
+<p>
+    #include (stdio.h)</br>
+        #include (stdlib.h)</br>
+        
+        #define MAX_SIZE 5</br>
+        
+        // Structure to represent a circular queue</br>
+        struct CircularQueue {</br>
+            int front, rear;</br>
+            int items[MAX_SIZE];</br>
+        };</br>
+        
+        // Function to initialize the circular queue</br>
+        void initializeQueue(struct CircularQueue* queue) {</br>
+            queue->front = -1;</br>
+            queue->rear = -1;</br>
+        }</br>
+        </br>
+        // Function to check if the queue is empty</br>
+        int isEmpty(struct CircularQueue* queue) {</br>
+            return (queue->front == -1 && queue->rear == -1);</br>
+        }</br>
+        </br>
+        // Function to check if the queue is full</br>
+        int isFull(struct CircularQueue* queue) {</br>
+            return ((queue->rear + 1) % MAX_SIZE == queue->front);</br>
+        }</br>
+        </br>
+        // Function to insert an element into the circular queue</br>
+        void enqueue(struct CircularQueue* queue, int value) {</br>
+            if (isFull(queue)) {</br>
+                printf("Queue is full. Cannot enqueue.\n");</br>
+            } else {</br>
+                if (isEmpty(queue)) {</br>
+                    queue->front = 0;
+                }</br>
+                queue->rear = (queue->rear + 1) % MAX_SIZE;</br>
+                queue->items[queue->rear] = value;</br>
+                printf("Enqueued %d\n", value);</br>
+            }</br>
+        }</br>
+        
+        // Function to remove an element from the circular queue</br>
+        void dequeue(struct CircularQueue* queue) {</br>
+            if (isEmpty(queue)) {</br>
+                printf("Queue is empty. Cannot dequeue.\n");</br>
+            } else {</br>
+                printf("Dequeued %d\n", queue->items[queue->front]);</br>
+                if (queue->front == queue->rear) {</br>
+                    // Last element is dequeued, reset front and rear</br>
+                    initializeQueue(queue);</br>
+                } else {</br>
+                    queue->front = (queue->front + 1) % MAX_SIZE;</br>
+                }</br>
+            }</br>
+        }</br>
+        
+        // Function to display the elements of the circular queue</br>
+        void display(struct CircularQueue* queue) {</br>
+            if (isEmpty(queue)) {
+                printf("Queue is empty.\n");</br>
+            } else {</br>
+                printf("Circular Queue: ");</br>
+                int i = queue->front;</br>
+                do {</br>
+                    printf("%d ", queue->items[i]);</br>
+                    i = (i + 1) % MAX_SIZE;</br>
+                } while (i != (queue->rear + 1) % MAX_SIZE);</br>
+                printf("\n");</br>
+            }</br>
+        }</br>
+        
+        int main() {</br>
+            struct CircularQueue queue;</br>
+            initializeQueue(&queue);</br>
+        
+            int choice, value;</br>
+        
+            do {</br>
+                printf("\nCircular Queue Operations:\n");</br>
+                printf("1. Enqueue\n");</br>
+                printf("2. Dequeue\n");</br>
+                printf("3. Display\n");</br>
+                printf("4. Exit\n");</br>
+                printf("Enter your choice: ");</br>
+                scanf("%d", &choice);</br>
+        
+                switch (choice) {</br>
+                    case 1:</br>
+                        printf("Enter the value to enqueue: ");</br>
+                        scanf("%d", &value);</br>
+                        enqueue(&queue, value);</br>
+                        break;</br>
+                    case 2:</br>
+                        dequeue(&queue);</br>
+                        break;</br>
+                    case 3:</br>
+                        display(&queue);</br>
+                        break;</br>
+                    case 4:</br>
+                        printf("Exiting the program.\n");</br>
+                        break;</br>
+                    default:</br>
+                        printf("Invalid choice. Please enter a valid option.\n");</br>
+                }</br>
+            } while (choice != 4);</br>
+        
+            return 0;</br>
+        }</br>
+        
+        
+</p>
+<h1>Linked list</h1>
+<p>
+    #include (stdio.h)</br>
+        #include (stdlib.h)</br>
+        
+        struct Node {</br>
+            int data;</br>
+            struct Node* next;</br>
+        };</br>
+        
+        void traversalelem(struct Node* ptr) {</br>
+            while (ptr != NULL) {</br>
+                printf("Element: %d\n", ptr->data);</br>
+                ptr = ptr->next;</br>
+            }</br>
+        }</br>
+        
+        struct Node* insertatfirst(struct Node* head, int data) {</br>
+            struct Node* ptr = (struct Node*)malloc(sizeof(struct Node));</br>
+            ptr->next = head;</br>
+            ptr->data = data;</br>
+            return ptr;</br>
+        }</br>
+        
+        struct Node* insertatindex(struct Node* head, int data, int index) {</br>
+            struct Node* ptr = (struct Node*)malloc(sizeof(struct Node));</br>
+            struct Node* p = head;</br>
+            int i = 0;</br>
+            while (i != index - 1) {</br>
+                p = p->next;</br>
+                i++;</br>
+            }</br>
+            ptr->data = data;</br>
+            ptr->next = p->next;</br>
+            p->next = ptr;</br>
+            return head;</br>
+        }</br>
+        
+        struct Node* insertatend(struct Node* head, int data) {</br>
+            struct Node* ptr = (struct Node*)malloc(sizeof(struct Node));</br>
+            ptr->data = data;</br>
+            ptr->next = NULL;</br>
+            struct Node* p = head;</br>
+            while (p->next != NULL) {</br>
+                p = p->next;</br>
+            }</br>
+            p->next = ptr;</br>
+            return head;</br>
+        }</br>
+        
+        struct Node* insertafternode(struct Node* head, struct Node* prevnode, int data) {</br>
+            struct Node* ptr = (struct Node*)malloc(sizeof(struct Node));</br>
+            ptr->data = data;</br>
+            ptr->next = prevnode->next;</br>
+            prevnode->next = ptr;</br>
+            return head;</br>
+        }</br>
+        struct Node* deleteatfirst(struct Node* head) {</br>
+            if (head == NULL) {</br>
+                printf("The list is empty. Cannot delete from an empty list.\n");</br>
+                return NULL;</br>
+            }</br>
+        
+            struct Node* ptr = head;</br>
+            head = head->next;</br>
+            free(ptr);</br>
+            return head;</br>
+        }</br>
+        
+        struct Node* deleteatindex(struct Node* head, int index) {</br>
+            if (head == NULL) {</br>
+                printf("The list is empty. Cannot delete from an empty list.\n");</br>
+                return NULL;</br>
+            }</br>
+        
+            if (index < 0) {</br>
+                printf("Invalid index. Index must be non-negative.\n");</br>
+                return head;</br>
+            }</br>
+        
+            if (index == 0) {</br>
+                return deleteatfirst(head);</br>
+            }</br>
+        
+            struct Node* p = head;</br>
+            struct Node* q = head->next;</br>
+        
+            int i;</br>
+            for (i = 0; i < index - 1 && q != NULL; i++) {</br>
+                p = p->next;</br>
+                q = q->next;</br>
+            }</br>
+        
+            if (q == NULL) {</br>
+                printf("Invalid index. Node not found at index %d.\n", index);</br>
+            } else {</br>
+                p->next = q->next;</br>
+                free(q);</br>
+            }</br>
+        
+            return head;</br>
+        }</br>
+        
+        struct Node* deleteatend(struct Node* head) {</br>
+            if (head == NULL) {</br>
+                printf("The list is empty. Cannot delete from an empty list.\n");</br>
+                return NULL;</br>
+            }</br>
+        
+            if (head->next == NULL) {</br>
+                free(head);</br>
+                return NULL;</br>
+            }</br>
+        
+            struct Node* p = head;</br>
+            struct Node* q = head->next;</br>
+        
+            while (q->next != NULL) {</br>
+                p = p->next;</br>
+                q = q->next;</br>
+            }</br>
+        
+            p->next = NULL;</br>
+            free(q);</br>
+            return head;</br>
+        }</br>
+        
+        struct Node* deleteforavalue(struct Node* head, int value) {</br>
+            if (head == NULL) {</br>
+                printf("The list is empty. Cannot delete from an empty list.\n");</br>
+                return NULL;</br>
+            }</br>
+        
+            struct Node* p = head;</br>
+            struct Node* q = head->next;</br>
+        
+            if (p->data == value) {</br>
+                return deleteatfirst(head);</br>
+            }</br>
+        
+            while (q != NULL && q->data != value) {</br>
+                p = p->next;</br>
+                q = q->next;</br>
+            }</br>
+        
+            if (q != NULL) {</br>
+                p->next = q->next;</br>
+                free(q);</br>
+            } else {</br>
+                printf("Value %d not found in the list.\n", value);</br>
+            }</br>
+        
+            return head;</br>
+        }</br>
+        int main() {</br>
+            struct Node* head = NULL;</br>
+            int choice;</br>
+            int data, index,value;</br>
+        
+            while (1) {</br>
+                printf("\nLinked List Menu:\n");</br>
+                printf("1. Insert at the beginning\n");</br>
+                printf("2. Insert at any given index\n");</br>
+                printf("3. Insert at the end\n");</br>
+                printf("4. Insert after a specific node\n");</br>
+                printf("5. Delete the first node\n");</br>
+                printf("6. Delete a node at a specific index\n");</br>
+                printf("7. Delete the last node\n");</br>
+                printf("8. Delete nodes with a specific value\n");</br>
+                printf("9. Print elements\n");</br>
+                printf("10. Exit\n");</br>
+                printf("Enter your choice: ");</br>
+                scanf("%d", &choice);</br>
+        
+                switch (choice) {</br>
+                    case 1:</br>
+                        printf("Enter data to insert at the beginning: ");</br>
+                        scanf("%d", &data);</br>
+                        head = insertatfirst(head, data);</br>
+                        break;</br>
+                    case 2:</br>
+                        printf("Enter data to insert: ");</br>
+                        scanf("%d", &data);</br>
+                        printf("Enter index to insert at: ");</br>
+                        scanf("%d", &index);</br>
+                        head = insertatindex(head, data, index);</br>
+                        break;</br>
+                    case 3:</br>
+                        printf("Enter data to insert at the end: ");</br>
+                        scanf("%d", &data);</br>
+                        head = insertatend(head, data);</br>
+                        break;</br>
+                    case 4:</br>
+                        printf("Enter data to insert: ");</br>
+                        scanf("%d", &data);</br>
+                        printf("Enter data of the node after which you want to insert: ");</br>
+                        scanf("%d", &index);</br>
+                        struct Node* prev = head;</br>
+                        while (prev != NULL && prev->data != index) {</br>
+                            prev = prev->next;</br>
+                        }</br>
+                        if (prev == NULL) {</br>
+                            printf("Node with data %d not found!\n", index);</br>
+                        } else {</br>
+                            head = insertafternode(head, prev, data);</br>
+                        }</br>
+                        break;</br>
+                    case 5:</br>
+                        head = deleteatfirst(head);</br>
+                        break;</br>
+                    case 6:</br>
+                        printf("Enter index to delete: ");</br>
+                        scanf("%d", &index);</br>
+                        head = deleteatindex(head, index);</br>
+                        break;</br>
+                    case 7:</br>
+                        head = deleteatend(head);</br>
+                        break;</br>
+                    case 8:</br>
+                        printf("Enter value to delete: ");</br>
+                        scanf("%d", &value);</br>
+                        head = deleteforavalue(head, value);</br>
+                        break;</br>
+                    case 9:</br>
+                        printf("Linked List elements:\n");</br>
+                        traversalelem(head);</br>
+                        break;</br>
+                    case 10:</br>
+                        exit(0);</br>
+                    default:</br>
+                        printf("Invalid choice! Please enter a valid option.\n");</br>
+                }</br>
+            }</br>
+        
+            return 0;</br>
+        }
+</p>
+<h1>Queue</h1>
+<p>
+    #include (stdio.h)</br>
+        #include (stdlib.h)</br>
+        
+        struct queue {</br>
+            int size;</br>
+            int* arr;</br>
+            int r;</br>
+            int f;</br>
+        };</br>
+        
+        int isFull(struct queue* q) {</br>
+            if (q->r == q->size - 1) {</br>
+                return 1;</br>
+            }</br>
+            return 0;</br>
+        }</br>
+        
+        int isEmpty(struct queue* q) {</br>
+            if (q->r == q->f) {</br>
+                return 1;</br>
+            } else {</br>
+                return 0;</br>
+            }</br>
+        }</br>
+        
+        void enqueue(struct queue* q, int val) {</br>
+            if (isFull(q)) {</br>
+                printf("Queue is full\n");</br>
+            } else {</br>
+                q->r++;</br>
+                q->arr[q->r] = val;</br>
+            }</br>
+        }</br>
+        
+        int dequeue(struct queue* q) {</br>
+            int a = -1;</br>
+            if (isEmpty(q)) {</br>
+                printf("Queue is empty\n");</br>
+            } else {</br>
+                q->f++;</br>
+                a = q->arr[q->f];</br>
+            }</br>
+            return a;</br>
+        }</br>
+        
+        void traverse(struct queue* q) {</br>
+            if (isEmpty(q)) {</br>
+                printf("Queue is empty\n");</br>
+                return;</br>
+            }</br>
+        
+            printf("Queue elements:\n");</br>
+            for (int i = q->f + 1; i <= q->r; i++) {</br>
+                printf("%d ", q->arr[i]);</br>
+            }</br>
+            printf("\n");</br>
+        }</br>
+        
+        int main() {</br>
+            struct queue q;</br>
+            q.size = 20;</br>
+            q.r = -1;</br>
+            q.f = -1;</br>
+            q.arr = (int*)malloc(q.size * sizeof(int));</br>
+        
+            int choice, element;</br>
+        
+            while (1) {</br>
+                printf("\nQueue Menu:\n");</br>
+                printf("1. Enqueue\n");</br>
+                printf("2. Dequeue\n");</br>
+                printf("3. Check if the queue is empty\n");</br>
+                printf("4. Check if the queue is full\n");</br>
+                printf("5. Traverse the queue\n");</br>
+                printf("6. Exit\n");</br>
+                printf("Enter your choice: ");</br>
+                scanf("%d", &choice);</br>
+        
+                switch (choice) {</br>
+                    case 1:</br>
+                        printf("Enter element to enqueue: ");</br>
+                        scanf("%d", &element);</br>
+                        enqueue(&q, element);</br>
+                        break;</br>
+                    case 2:</br>
+                        element = dequeue(&q);</br>
+                        if (element != -1) {</br>
+                            printf("Dequeued element: %d\n", element);</br>
+                        }</br>
+                        break;</br>
+                    case 3:</br>
+                        if (isEmpty(&q)) {</br>
+                            printf("Queue is empty.\n");</br>
+                        } else {</br>
+                            printf("Queue is not empty.\n");</br>
+                        }</br>
+                        break;</br>
+                    case 4:</br>
+                        if (isFull(&q)) {</br>
+                            printf("Queue is full.\n");</br>
+                        } else {</br>
+                            printf("Queue is not full.\n");</br>
+                        }</br>
+                        break;</br>
+                    case 5:</br>
+                        traverse(&q);</br>
+                        break;</br>
+                    case 6:</br>
+                        free(q.arr);</br>
+                        exit(0);</br>
+                    default:</br>
+                        printf("Invalid choice! Please enter a valid option.\n");</br>
+                }</br>
+            }</br>
+        
+            return 0;</br>
+        }</br>
+        
+
+</p>
+<h1>Double Linked List</h1>
+<p>
+    #include (stdio.h)</br>
+        #include (stdlib.h)</br>
+        
+        struct Node {</br>
+            int data;</br>
+            struct Node* prev;</br>
+            struct Node* next;</br>
+        };</br>
+        
+        struct Node* createNode(int data) {</br>
+            struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));</br>
+            newNode->data = data;</br>
+            newNode->prev = NULL;</br>
+            newNode->next = NULL;</br>
+            return newNode;</br>
+        }</br>
+        
+        void insertAtEnd(struct Node** head, int data) {</br>
+            struct Node* newNode = createNode(data);</br>
+            if (*head == NULL) {</br>
+                *head = newNode;</br>
+            } else {</br>
+                struct Node* current = *head;</br>
+                while (current->next != NULL) {</br>
+                    current = current->next;</br>
+                }</br>
+                current->next = newNode;</br>
+                newNode->prev = current;</br>
+            }</br>
+        }</br>
+        
+        void insertAtBeginning(struct Node** head, int data) {</br>
+            struct Node* newNode = createNode(data);</br>
+            newNode->next = *head;</br>
+            if (*head != NULL) {</br>
+                (*head)->prev = newNode;</br>
+            }</br>
+            *head = newNode;</br>
+        }</br>
+        
+        void insertBetweenNodes(struct Node* prevNode, int data) {</br>
+            if (prevNode == NULL) {</br>
+                printf("Previous node cannot be NULL for insertion between nodes.\n");</br>
+                return;</br>
+            }</br>
+            struct Node* newNode = createNode(data);</br>
+            newNode->prev = prevNode;</br>
+            newNode->next = prevNode->next;</br>
+            if (prevNode->next != NULL) {</br>
+                prevNode->next->prev = newNode;</br>
+            }</br>
+            prevNode->next = newNode;</br>
+        }</br>
+        
+        void deleteAtEnd(struct Node** head) {</br>
+            if (*head == NULL) {</br>
+                printf("List is empty. Cannot delete from an empty list.\n");</br>
+                return;</br>
+            }</br>
+            struct Node* current = *head;</br>
+            while (current->next != NULL) {</br>
+                current = current->next;</br>
+            }</br>
+            if (current->prev != NULL) {
+                current->prev->next = NULL;</br>
+                free(current);</br>
+            } else {</br>
+                free(current);</br>
+                *head = NULL;</br>
+            }</br>
+        }</br>
+        
+        void deleteAtBeginning(struct Node** head) {</br>
+            if (*head == NULL) {</br>
+                printf("List is empty. Cannot delete from an empty list.\n");</br>
+                return;</br>
+            }</br>
+            struct Node* temp = *head;</br>
+            *head = (*head)->next;</br>
+            if (*head != NULL) {</br>
+                (*head)->prev = NULL;</br>
+            }</br>
+            free(temp);</br>
+        }</br>
+        
+        void deleteBetweenNodes(struct Node* nodeToDelete) {</br>
+            if (nodeToDelete == NULL) {</br>
+                printf("Node to delete cannot be NULL for deletion between nodes.\n");</br>
+                return;</br>
+            }</br>
+            if (nodeToDelete->prev != NULL) {</br>
+                nodeToDelete->prev->next = nodeToDelete->next;</br>
+            }</br>
+            if (nodeToDelete->next != NULL) {</br>
+                nodeToDelete->next->prev = nodeToDelete->prev;</br>
+            }</br>
+            free(nodeToDelete);</br>
+        }</br>
+        
+        void display(struct Node* head) {</br>
+            struct Node* current = head;</br>
+            while (current != NULL) {</br>
+                printf("%d <-> ", current->data);</br>
+                current = current->next;</br>
+            }</br>
+            printf("NULL\n");</br>
+        }</br>
+        
+        int main() {</br>
+            struct Node* head = NULL;</br>
+            int choice, data;</br>
+        
+            while (1) {</br>
+                printf("\nDoubly Linked List Operations:\n");</br>
+                printf("1. Insert at End\n");</br>
+                printf("2. Insert at Beginning\n");
+                printf("3. Insert Between Nodes\n");</br>
+                printf("4. Delete at End\n");</br>
+                printf("5. Delete at Beginning\n");</br>
+                printf("6. Delete Between Nodes\n");</br>
+                printf("7. Display\n");</br>
+                printf("8. Exit\n");</br>
+                printf("Enter your choice: ");</br>
+                scanf("%d", &choice);</br>
+        
+                switch (choice) {</br>
+                    case 1:</br>
+                        printf("Enter data to insert at the end: ");</br>
+                        scanf("%d", &data);</br>
+                        insertAtEnd(&head, data);</br>
+                        break;</br>
+                    case 2:</br>
+                        printf("Enter data to insert at the beginning: ");</br>
+                        scanf("%d", &data);</br>
+                        insertAtBeginning(&head, data);</br>
+                        break;</br>
+                    case 3:</br>
+                        printf("Enter data to insert: ");</br>
+                        scanf("%d", &data);</br>
+                        printf("Enter data of the node after which to insert: ");</br>
+                        int prevData;</br>
+                        scanf("%d", &prevData);</br>
+                        struct Node* prevNode = head;</br>
+                        while (prevNode != NULL && prevNode->data != prevData) {</br>
+                            prevNode = prevNode->next;</br>
+                        }</br>
+                        insertBetweenNodes(prevNode, data);</br>
+                        break;</br>
+                    case 4:</br>
+                        deleteAtEnd(&head);</br>
+                        break;</br>
+                    case 5:</br>
+                        deleteAtBeginning(&head);</br>
+                        break;</br>
+                    case 6:</br>
+                        printf("Enter data of the node to delete: ");</br>
+                        scanf("%d", &data);</br>
+                        struct Node* nodeToDelete = head;</br>
+                        while (nodeToDelete != NULL && nodeToDelete->data != data) {</br>
+                            nodeToDelete = nodeToDelete->next;</br>
+                        }</br>
+                        deleteBetweenNodes(nodeToDelete);</br>
+                        break;</br>
+                    case 7:</br>
+                        display(head);</br>
+                        break;</br>
+                    case 8:</br>
+                        exit(0);</br>
+                    default:</br>
+                        printf("Invalid choice. Please enter a valid option.\n");</br>
+                }</br>
+            }</br>
+        
+            return 0;</br>
+        }</br>
+</p>
+<h1>Stack</h1>
+<p>
+    #include(stdio.h)</br>
+        #include(stdlib.h)</br>
+        
+        struct stack {</br>
+            int size;</br>
+            int top;</br>
+            int * arr;</br>
+        };</br>
+        
+        int isFull(struct stack * ptr) {</br>
+            if (ptr->top == ptr->size - 1) {</br>
+                return 1;</br>
+            } else {</br>
+                return 0;</br>
+            }</br>
+        }</br>
+        
+        int isEmpty(struct stack * ptr) {</br>
+            if (ptr->top == -1) {</br>
+                return 1;</br>
+            } else {</br>
+                return 0;</br>
+            }</br>
+        }</br>
+        
+        void push(struct stack * ptr, int val) {</br>
+            if (isFull(ptr)) {</br>
+                printf("Stack overflow\n");</br>
+            } else {</br>
+                ptr->top++;</br>
+                ptr->arr[ptr->top] = val;</br>
+            }</br>
+        }</br>
+        
+        int pop(struct stack * ptr) {</br>
+            if (isEmpty(ptr)) {</br>
+                printf("Stack underflow\n");</br>
+                return -1; // Return a sentinel value indicating an error</br>
+            } else {</br>
+                int val = ptr->arr[ptr->top];</br>
+                ptr->top--;</br>
+                return val;</br>
+            }</br>
+        }</br>
+        
+        int peek(struct stack * ptr, int i) {</br>
+            int arrindex = ptr->top - i + 1;</br>
+            if (arrindex < 0) {</br>
+                printf("No element\n");</br>
+                return -1; // Return a sentinel value indicating an error</br>
+            } else {</br>
+                return(ptr->arr[arrindex]);</br>
+            }</br>
+        }</br>
+        
+        void traverse(struct stack * ptr) {</br>
+            if (isEmpty(ptr)) {</br>
+                printf("Stack is empty\n");</br>
+            } else {</br>
+                printf("Stack elements:\n");</br>
+                for (int i = 0; i <= ptr->top; i++) {</br>
+                    printf("%d ", ptr->arr[i]);</br>
+                }</br>
+                printf("\n");</br>
+            }</br>
+        }</br>
+        
+        int main() {</br>
+            struct stack* sp = (struct stack *)malloc(sizeof(struct stack));</br>
+            sp->size = 10;</br>
+            sp->top = -1;</br>
+            sp->arr = (int*)malloc(sp->size * sizeof(int));</br>
+        
+            int choice, element;</br>
+        
+            while (1) {</br>
+                printf("Choose an operation:\n");</br>
+                printf("1. Push\n");</br>
+                printf("2. Pop\n");</br>
+                printf("3. Traverse\n");</br>
+                printf("4. Exit\n");</br>
+                scanf("%d", &choice);</br>
+        
+                switch (choice) {</br>
+                    case 1:</br>
+                        printf("Enter the element to push: ");</br>
+                        scanf("%d", &element);</br>
+                        push(sp, element);</br>
+                        break;</br>
+                    case 2:</br>
+                        printf("Popped %d from the stack\n", pop(sp));</br>
+                        break;</br>
+                    case 3:</br>
+                        traverse(sp);</br>
+                        break;</br>
+                    case 4:</br>
+                        free(sp->arr); // Free the memory allocated for the stack</br>
+                        free(sp);</br>
+                        exit(0);</br>
+                    default:</br>
+                        printf("Invalid choice, please try again\n");</br>
+                }</br>
+            }</br>
+        
+            return 0;</br>
+        }</br>
+        
+</p>
+<h1>Sorting</h1>
+<p>
+    #include (stdio.h)</br>
+        #include (stdlib.h)</br>
+        
+        // Function prototypes</br>
+        void printArray(int arr[], int size);</br>
+        void quickSort(int arr[], int low, int high);</br>
+        int partition(int arr[], int low, int high);</br>
+        void insertionSort(int arr[], int n);</br>
+        void mergeSort(int arr[], int l, int r);</br>
+        void merge(int arr[], int l, int m, int r);</br>
+        void selectionSort(int arr[], int n);</br>
+        
+        int main() {</br>
+            int choice;</br>
+            int n;</br>
+        
+            // Get the size of the array from the user</br>
+            printf("Enter the number of elements: ");</br>
+            scanf("%d", &n);</br>
+        
+            int arr[n];</br>
+        
+            // Get the array elements from the user</br>
+            printf("Enter %d elements:\n", n);</br>
+            for (int i = 0; i < n; i++) {</br>
+                scanf("%d", &arr[i]);</br>
+            }</br>
+        
+            // Display the original array</br>
+            printf("Original array: ");</br>
+            printArray(arr, n);</br>
+            while(1){
+            // Get the choice of sorting algorithm from the user</br>
+            printf("\nChoose a sorting algorithm:\n");</br>
+            printf("1. QuickSort\n");</br>
+            printf("2. Insertion Sort\n");</br>
+            printf("3. Merge Sort\n");</br>
+            printf("4. Selection Sort\n");</br>
+            printf("5. Exit\n");</br>
+        
+            printf("Enter your choice (1-4): ");</br>
+            scanf("%d", &choice);</br>
+        </br>
+            // Perform the sorting based on the user's choice</br>
+            switch (choice) {</br>
+                case 1:</br>
+                    quickSort(arr, 0, n - 1);</br>
+                    printf("Sorted array using QuickSort: ");</br>
+                    break;</br>
+                case 2:</br>
+                    insertionSort(arr, n);</br>
+                    printf("Sorted array using Insertion Sort: ");</br>
+                    break;</br>
+                case 3:
+                    mergeSort(arr, 0, n - 1);</br>
+                    printf("Sorted array using Merge Sort: ");
+                    break;</br>
+                case 4:</br>
+                    selectionSort(arr, n);</br>
+                    printf("Sorted array using Selection Sort: ");</br>
+                    break;</br>
+                case 5:</br>
+                    exit(0);</br>
+                default:</br>
+                    printf("Invalid choice\n");</br>
+                    return 1;</br>
+            }</br>
+        
+            // Display the sorted array</br>
+            printArray(arr, n);</br>
+            }</br>
+            return 0;</br>
+        
+        }</br>
+        
+        // Function to print an array</br>
+        void printArray(int arr[], int size) {</br>
+            for (int i = 0; i < size; i++) {</br>
+                printf("%d ", arr[i]);</br>
+            }</br>
+            printf("\n");</br>
+        }</br>
+        
+        // Function to perform QuickSort</br>
+        void quickSort(int arr[], int low, int high) {</br>
+            if (low < high) {</br>
+                // Find pivot element such that</br>
+                // elements smaller than pivot are on the left</br>
+                // elements greater than pivot are on the right</br>
+                int pi = partition(arr, low, high);</br>
+        
+                // Recursively sort the sub-arrays</br>
+                quickSort(arr, low, pi - 1);</br>
+                quickSort(arr, pi + 1, high);</br>
+            }</br>
+        }</br>
+        
+        // Function to partition the array for QuickSort</br>
+        int partition(int arr[], int low, int high) {</br>
+            int pivot = arr[high]; // Choose the rightmost element as the pivot</br>
+            int i = low - 1;       // Index of smaller element</br>
+        
+            // Traverse the array and rearrange elements</br>
+            // smaller than pivot are moved to the left</br>
+            // greater than pivot are moved to the right</br>
+            for (int j = low; j <= high - 1; j++) {</br>
+                if (arr[j] < pivot) {</br>
+                    i++;</br>
+                    // Swap arr[i] and arr[j]</br>
+                    int temp = arr[i];</br>
+                    arr[i] = arr[j];</br>
+                    arr[j] = temp;</br>
+                }</br>
+            }</br>
+        
+            // Swap arr[i + 1] and arr[high] (pivot)</br>
+            int temp = arr[i + 1];</br>
+            arr[i + 1] = arr[high];</br>
+            arr[high] = temp;</br>
+        
+            return i + 1;</br>
+        }</br>
+        
+        // Function to perform Insertion Sort</br>
+        void insertionSort(int arr[], int n) {</br>
+            for (int i = 1; i < n; i++) {</br>
+                int key = arr[i];</br>
+                int j = i - 1;</br>
+        
+                // Move elements of arr[0..i-1] that are greater than key</br>
+                // to one position ahead of their current position</br>
+                while (j >= 0 && arr[j] > key) {</br>
+                    arr[j + 1] = arr[j];</br>
+                    j--;</br>
+                }
+                arr[j + 1] = key;</br>
+            }</br>
+        }</br>
+        
+        // Function to perform Merge Sort</br>
+        void mergeSort(int arr[], int l, int r) {</br>
+            if (l < r) {</br>
+                int m = l + (r - l) / 2; // Calculate mid point of array</br>
+        
+                // Recursively sort two halves</br>
+                mergeSort(arr, l, m);</br>
+                mergeSort(arr, m + 1, r);</br>
+        
+                // Merge the sorted halves</br>
+                merge(arr, l, m, r);</br>
+            }</br>
+        }</br>
+        
+        // Function to merge two halves of an array</br>
+        void merge(int arr[], int l, int m, int r) {</br>
+            int i, j, k;</br>
+            int n1 = m - l + 1;</br>
+            int n2 = r - m;</br>
+        </br>
+            // Create temporary arrays</br>
+            int L[n1], R[n2];</br>
+        
+            // Copy data to temporary arrays L[] and R[]</br>
+            for (i = 0; i < n1; i++)</br>
+                L[i] = arr[l + i];</br>
+            for (j = 0; j < n2; j++)</br>
+                R[j] = arr[m + 1 + j];</br>
+        
+            // Merge the temporary arrays back into arr[l..r]</br>
+            i = 0;   // Initial index of first subarray</br>
+            j = 0;   // Initial index of second subarray</br>
+            k = l;   // Initial index of merged subarray</br>
+        
+            while (i < n1 && j < n2) {</br>
+                if (L[i] <= R[j]) {</br>
+                    arr[k] = L[i];</br>
+                    i++;</br>
+                } else {</br>
+                    arr[k] = R[j];</br>
+                    j++;</br>
+                }</br>
+                k++;</br>
+            }</br>
+        
+            // Copy the remaining elements of L[], if there are any</br>
+            while (i < n1) {</br>
+                arr[k] = L[i];</br>
+                i++;</br>
+                k++;</br>
+            }</br>
+        
+            // Copy the remaining elements of R[], if there are any</br>
+            while (j < n2) {</br>
+                arr[k] = R[j];</br>
+                j++;</br>
+                k++;</br>
+            }</br>
+        }</br>
+        
+        // Function to perform Selection Sort</br>
+        void selectionSort(int arr[], int n) {</br>
+            int i, j, min_idx;</br>
+        
+            // One by one move boundary of unsorted subarray</br>
+            for (i = 0; i < n - 1; i++) {</br>
+                // Find the minimum element in the unsorted array</br>
+                min_idx = i;</br>
+                for (j = i + 1; j < n; j++) {</br>
+                    if (arr[j] < arr[min_idx]) {</br>
+                        min_idx = j;</br>
+                    }</br>
+                }</br>
+            }</br>
+        }</br>
+        
+        
+</p>
+
+
+
+</body>
+</html>

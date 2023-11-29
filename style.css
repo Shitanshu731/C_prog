@@ -1,0 +1,23 @@
+body {
+    
+    margin : 93px;
+    gap : 4;
+    background-color: black;
+   
+
+}
+* {
+    color : white;
+}
+ul a{
+    color : white;
+    font-size: larger;
+    font-weight: 900;
+    margin-right: 99px;
+}
+
+ul a:hover{
+    transition: 0.4s;
+    font-size : 24px; 
+    
+ }
